@@ -114,39 +114,112 @@ void exibirElementos()
 
 void inserirElemento()
 {
-	// aloca memoria dinamicamente para o novo elemento
 	NO* novo = (NO*)malloc(sizeof(NO));
-	if (novo == NULL)
-	{
+	if (novo == NULL){
+		cout << "Erro ao alocar memoria";
 		return;
 	}
 
 	cout << "Digite o elemento: ";
 	cin >> novo->valor;
+
 	novo->prox = NULL;
 
-	if (primeiro == NULL)
-	{
+	if (primeiro == NULL || novo-> valor < primeiro-> valor) {
+		novo->prox = primeiro;
 		primeiro = novo;
+		return;
 	}
-	else
-	{
-		// procura o final da lista
-		NO* aux = primeiro;
-		while (aux->prox != NULL) {
-			aux = aux->prox;
-		}
-		aux->prox = novo;
+
+	NO* atual = primeiro;
+	NO* anterior = NULL;
+
+	while (atual != NULL && atual->valor < novo->valor) {
+		anterior = atual;
+
+		atual = atual->prox;
 	}
+
+	if (atual != NULL && atual->valor == novo->valor) {
+		cout << "Valor já existe na memoria";
+	}
+
+	anterior -> prox = novo;
+	novo->prox = atual;
+
+
+
+
 }
 
 void excluirElemento()
 {
+	if (primeiro == NULL) {
+		cout << "Lista vazia, impossivel excluir";
+		return;
+	}
+
+
+	int valorAExcluir = 0;
+
+	cout << "Insira o valor a excluir";
+
+	cin >> valorAExcluir;
+
+	NO* atual = primeiro;
+
+	NO* anterior = NULL;
+
+
+	while (atual->prox != NULL && atual ->valor <  valorAExcluir) {
+
+		anterior = atual;
+		atual = atual->prox;
+	}
+
+	if (atual == NULL && atual -> valor != valorAExcluir) {
+		cout << "Elemento nao encontrado";
+	}
+
+	if (anterior == NULL) {
+		primeiro = atual->prox;
+	}
+	else {
+		anterior->prox = atual->prox;
+		free(atual);
+		cout << "Elemento excluido";
+	}
 
 }
 
 void buscarElemento()
 {
+	NO* atual = primeiro;
+
+	int	elementoABuscar = 0;
+
+	cout << "Insira o elemento a ser buscado";
+
+	cin >> elementoABuscar;
+
+	while (atual != NULL ) {
+
+		if (atual->valor == elementoABuscar) {
+			cout << "Elemento encontrado";
+			return;
+		}
+
+		if (atual->valor > elementoABuscar) {
+			cout << "Elemento nao encontrado, passamos do valor";
+			return;
+		}
+
+		atual = atual->prox;
+	
+	}
+	
+	cout << "Elemento nao encontrado" << endl;
+
 
 }
 
